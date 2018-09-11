@@ -220,13 +220,13 @@ if __name__ == '__main__':
 	print('>>>>> Loading data...')
 	#filename1,filename2,time_steps,split
 	time_steps = 20
-	forecast_steps = [10]#[0,5,10,15,20]
+	forecast_steps = [13,15,17,19]#[1,5,10,15,20] real
 
 	for fore_step in forecast_steps:
 
 		fig = plt.figure(fore_step)
 
-		time_range = time_steps + fore_step
+		time_range = time_steps + fore_step -1
 		features = 4
 		split = 0.9
 		X_train,Y_train,X_test,Y_test,scaler = load_data('X_Y_dX_dY_11_13.csv', time_steps, features, split , time_range)
@@ -239,9 +239,17 @@ if __name__ == '__main__':
 		model = build_train_model(X_train,Y_train,X_test,Y_test, epochs, batch_size)
 
 		#save model  HDF5 file
-		#model.save('my_model.h5')
+		if fore_step == 13:
+			model.save('./model/model_20_13.h5')
+		elif fore_step == 15:
+			model.save('./model/model_20_15.h5')
+		elif fore_step == 17:
+			model.save('./model/model_20_17.h5')
+		elif fore_step == 19:
+			model.save('./model/model_20_19.h5')
 		
-		my_model = model#load_model('my_model.h5') # model_four_two_0.1s.h5   from 0.5s to predict 0.1s
+		#my_model = load_model('./model/6_model_for_carmaker/model_20_1.h5') # model_four_two_0.1s.h5   from 0.5s to predict 0.1s
+		my_model = model
 
 		#predict next position 
 		predict_result,true_result = pos_predict(my_model,scaler,X_test,Y_test)
